@@ -17,6 +17,7 @@ namespace Renderer3D.Graphics
 
         static Plane3D plane;
         static Cube cube;
+        static Circle circle;
 
         public static void Init()
         {
@@ -29,12 +30,14 @@ namespace Renderer3D.Graphics
 
             plane = new Plane3D(camera, lighting);
             cube = new Cube(camera, lighting);
+            circle = new Circle(camera, lighting);
         }
 
         public static void Draw()
         {
             GraphicsDevice device = Main.Instance.GraphicsDevice;
-            
+            camera.Position = new(0, 0, 5);
+            lighting.Direction = new Vector3(1, 0, 1);
             camera.Update();
 
             Assets.Texturing.Value.Parameters["WorldViewProjection"].SetValue(camera.Transform);
@@ -52,13 +55,16 @@ namespace Renderer3D.Graphics
 
                 Vector3 rotation = new(0, timer, 0);
 
-                cube.Setup(Vector3.Forward, new Vector2(0.1f, 1), rotation, color);
-                cube.Draw();
+                //cube.Setup(Vector3.Forward, new Vector2(0.1f, 1), rotation, color);
+                //cube.Draw();
 
                 rotation.Y += MathF.PI / 2f;
 
-                plane.Setup(Vector3.Zero, new Vector2(1, 1), rotation, color);
-                plane.Draw();
+                //plane.Setup(new Vector3(0, 0, 0.1f), new Vector2(1f, 1f), new(0, timer / 4, 0), color);
+                //plane.Draw();
+
+                circle.Setup(Vector3.Zero, 1f, new(MathF.PI / 2f, timer / 4, 0), color, 6);
+                circle.Draw();
 
                 timer += MathF.PI / 50;
             }
