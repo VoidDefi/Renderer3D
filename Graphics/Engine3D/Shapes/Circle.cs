@@ -67,6 +67,7 @@ namespace Renderer3D.Graphics.Engine3D.Shapes
             //Set Last Vertex First
             Indices[Indices.Length - 2] = 1;
 
+
             //Transform Points
             Matrix translation =
                 Matrix.CreateRotationX(rotation.X) *
@@ -77,24 +78,7 @@ namespace Renderer3D.Graphics.Engine3D.Shapes
             for (int i = 0; i < Vertices.Length; i++)
             {
                 Vertices[i].position = Vector3.Transform(Vertices[i].position, translation);
-            }
-
-            Vector3 normal = Vector3.Zero;
-
-            if (customNormal.HasValue)
-            {
-                normal = customNormal.Value;
-            }
-
-            else
-            {
-                normal = Vertices[0].position - Vertices[1].position;
-                normal = Vector3.Transform(normal, Matrix.CreateRotationY(-MathF.PI / 2));
-            }
-
-            for (int i = 0; i < Vertices.Length; i++)
-            {
-                Vertices[i].normal = normal;
+                Vertices[i].normal = customNormal.HasValue ? customNormal.Value : Vector3.Transform(Vector3.Up, translation);
             }
         }
 

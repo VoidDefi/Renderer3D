@@ -93,6 +93,45 @@ namespace Renderer3D.Graphics.Engine3D.Shapes
             Vertices[5] = new Vertex3D(rightDown, color, Vector2.One, normal);
         }
 
+        public void Setup(Vector3 bottom, Vector3 top, float width, Vector3 normal, Color color)
+        {
+            float halfWidth = width / 2;
+
+            Vector3 center = Vector3.SmoothStep(top, bottom, 0.5f);
+
+            Vector3 axle = Vector3.Cross(top - bottom, normal);
+            axle.Normalize();
+            axle *= halfWidth;
+
+            //Calculate Points
+            Vector3 leftTop = top + axle;
+            Vector3 rightTop = top - axle;
+            Vector3 leftBottom = bottom + axle;
+            Vector3 rightBottom = bottom - axle;
+
+            /*
+            
+            leftTop -------- rightTop
+            |                       | 
+            |                       |
+            |                       |
+            leftBottom -- rightBottom
+
+            */
+
+            //Create Vertices
+
+            //First Triangle
+            Vertices[0] = new Vertex3D(leftTop, color, Vector2.Zero, normal);
+            Vertices[1] = new Vertex3D(leftBottom, color, Vector2.UnitY, normal);
+            Vertices[2] = new Vertex3D(rightTop, color, Vector2.UnitX, normal);
+
+            //Second Triangle
+            Vertices[3] = new Vertex3D(rightTop, color, Vector2.UnitX, normal);
+            Vertices[4] = new Vertex3D(leftBottom, color, Vector2.UnitY, normal);
+            Vertices[5] = new Vertex3D(rightBottom, color, Vector2.One, normal);
+        }
+
         public void Draw()
         {
             GraphicsDevice device = Main.Instance.GraphicsDevice;
